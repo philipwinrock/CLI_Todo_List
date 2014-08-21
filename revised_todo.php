@@ -76,9 +76,74 @@
 
     }
 
-    function sort_menu($array) {
+        function save_file($items) { 
+        //find if file is there//
+        fwrite(STDOUT, 'please enter file name ');
+        //input file name//
+        $filename = get_input();
+        if ($filename) {
+            # code...
+        if (file_exists($filename)) {
+            fwrite(STDOUT, 'File exists already , want to overwite? (Y)es ,(N)o: ');
+            $confirm = get_input(TRUE);
+            switch ($confirm ) {
+                // if user wants to overwrite file//
+                case 'Y':
+                //open file and erase contents//
+                $handle = fopen($filename, 'w');
+                foreach ($items as $item) {
+                    fwrite($handle, $item . PHP_EOL);
 
-        echo '(A)-Z , (Z)-A , (O)rder Entered , (R)everse order Entered , ' . PHP_EOL;
+                    # code...
+                }
+                fclose($handle);
+                //confirm file saved//
+                fwrite(STDOUT, 'Your file has been saved'. PHP_EOL);  
+                            break;  
+                            case 'N':
+                            fwrite(STDOUT, 'File has been cancelled' .PHP_EOL); 
+                            break;
+
+                            default:
+                            fwrite(STDOUT, 'File has been cancelled' . PHP_EOL);
+                            break;       # code...
+        }
+
+
+                  }  else {
+
+                            //opening file to write//
+                    $handle = fopen($filename , 'a');
+                    foreach ($items as $items) {
+                        fwrite($handle, $items . PHP_EOL);
+
+
+                        # code...
+                    }
+                    //close file//
+                    fclose($handle);
+                    fwrite(STDOUT, 'Your file has been saved.'. PHP_EOL);
+
+                  }
+}else {
+    fwrite(STDOUT, 'No file selected'. PHP_EOL);
+}
+}
+
+        
+
+
+
+
+
+       
+
+
+
+
+    function sort_menu($array) {
+                    // menu to choose//
+        echo '(A)-Z , (Z)-A , (O)rder Entered , (R)everse Order ,  ' . PHP_EOL;
         $input = get_input(TRUE);
         switch($input){
             case 'A': 
@@ -100,7 +165,7 @@
         }
             return $array;
 
-    }
+}
 
  // The loop!
      do {
@@ -108,7 +173,7 @@
      echo list_items($items);
 
      // Show the menu options
-     echo '(N)ew item, (R)emove item, (Q)uit , (S)ort (O)pen file: ';
+     echo '(N)ew item, (R)emove item, (O)penfile , (S)ort , s(A)ve file ,(Q)uit : ';
 
      if (empty($items)) {
     echo PHP_EOL . "The list is currently empty.\n" , "Needs Input:" . PHP_EOL;
@@ -140,7 +205,7 @@
 
          //put sort here??//
 
-}    elseif ($input == 'R') {
+    }    elseif ($input == 'R') {
          // Remove which item?
          echo 'Enter item number to remove: ';
          // Get array key
@@ -173,14 +238,20 @@
 
             # code...
         }
- // Exit when input is (Q)uit
+        elseif ($input == 'A') {
+            //save file//
+            save_file($items);
+            # code...
+        }
+
+ // Exit when input is (Q)uit//
 }    while ($input != 'Q');
 
 
- // Say Goodbye!
+ // Say Goodbye!//
          echo "Goodbye!\n";
 
- // Exit with 0 errors
+ // Exit with 0 errors//
     exit(0);
 
 
