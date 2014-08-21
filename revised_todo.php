@@ -57,6 +57,24 @@
 } 
 
 }
+    function file_list($file , $array){
+        //open list of things to do//
+        $handle = fopen($file , 'r');
+        //read in entire file and remove any blank lines//
+        $content = trim(fread($handle , filesize($file)));
+        //always close the file//
+        fclose($handle);
+        //split the contents of file into an array//
+        $list = explode("\n", $content);
+        foreach ($list as $items) {
+            $new_itemfromfile = array_shift($list);
+            array_push($array ,$new_itemfromfile);
+
+            # code...
+        }
+            return $array;
+
+    }
 
     function sort_menu($array) {
 
@@ -90,7 +108,7 @@
      echo list_items($items);
 
      // Show the menu options
-     echo '(N)ew item, (R)emove item, (Q)uit , (S)ort: ';
+     echo '(N)ew item, (R)emove item, (Q)uit , (S)ort (O)pen file: ';
 
      if (empty($items)) {
     echo PHP_EOL . "The list is currently empty.\n" , "Needs Input:" . PHP_EOL;
@@ -143,10 +161,21 @@
 
      elseif ($input=='L') {
         array_pop($items);
+
+
          # code...
      }
+        elseif ($input == 'O') {
+            echo 'Give path or file name: ';
+            $filename = get_input();
+            $items = file_list($filename ,$items);
+            
+
+            # code...
+        }
  // Exit when input is (Q)uit
 }    while ($input != 'Q');
+
 
  // Say Goodbye!
          echo "Goodbye!\n";
